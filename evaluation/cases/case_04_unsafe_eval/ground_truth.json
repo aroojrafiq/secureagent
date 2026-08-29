@@ -1,0 +1,16 @@
+{
+  "case_id": "case_04_unsafe_eval",
+  "title": "Synthetic unsafe dynamic code evaluation",
+  "language": "Python",
+  "vulnerability_name": "unsafe dynamic code evaluation",
+  "cwe": "CWE-95",
+  "expected_bandit_test_id": "B307",
+  "why_code_is_vulnerable": "The function accepts attacker-controlled expression strings and evaluates them with Python's built-in eval. That allows arbitrary code execution in any Python environment, even for simple arithmetic inputs, and Bandit flags this pattern as B307.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the ordinary arithmetic expression still evaluates to 20.0. The security test fails because the expression __import__('builtins').len('synthetic') is allowed through eval and does not raise ValueError as required.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B307.",
+    "No new high-severity security finding is introduced."
+  ]
+}
