@@ -1,0 +1,18 @@
+{
+  "case_id": "case_08_path_traversal",
+  "title": "Synthetic path traversal evaluation",
+  "language": "Python",
+  "vulnerability_name": "path traversal",
+  "cwe": "CWE-22",
+  "expected_bandit_test_id": null,
+  "detection_method": "pytest security test",
+  "why_code_is_vulnerable": "The function combines the synthetic export directory with a caller-supplied filename without validating traversal segments such as '../'. An attacker-controlled filename can escape the intended export directory and target arbitrary paths.",
+  "why_bandit_is_not_expected_to_detect_this_fixture": "Bandit does not flag this pattern as a security issue in a synthetic, non-file-system example because the actual risk depends on later file-system use and path handling outside the immediate expression itself.",
+  "expected_vulnerable_test_outcome": "The functional test passes because a normal filename is joined correctly. The security test fails because build_export_path('../outside.txt') returns a traversal path instead of raising ValueError.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Traversal input is rejected.",
+    "No new high-severity security finding is introduced."
+  ]
+}
