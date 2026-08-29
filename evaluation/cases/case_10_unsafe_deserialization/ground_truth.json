@@ -1,0 +1,25 @@
+{
+  "case_id": "case_10_unsafe_deserialization",
+  "title": "Synthetic unsafe deserialization evaluation",
+  "language": "Python",
+  "vulnerability_name": "deserialization of untrusted data",
+  "cwe": "CWE-502",
+  "expected_bandit_test_id": "B301",
+  "expected_companion_bandit_test_ids": [
+    "B403"
+  ],
+  "detection_method": "Bandit plus pytest security test",
+  "why_code_is_vulnerable": "The decoder calls pickle.loads on untrusted bytes from the caller. Python's pickle format is executable and can trigger arbitrary code execution when deserializing attacker-controlled payloads, so accepting untrusted data here is unsafe.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the payload is a harmless synthetic JSON byte string and the mocked pickle loader returns the expected mapping. The security test fails because the vulnerable implementation path still invokes pickle.loads and returns the pickle-mocked value instead of using the mocked JSON parser.",
+  "relevant_application_files": [
+    "decoder.py",
+    "vulnerable_app.py"
+  ],
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B301.",
+    "The unsafe pickle import and B403 companion finding are removed.",
+    "No new high-severity security finding is introduced."
+  ]
+}
