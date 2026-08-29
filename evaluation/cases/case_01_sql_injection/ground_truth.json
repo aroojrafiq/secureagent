@@ -1,0 +1,16 @@
+{
+  "case_id": "case_01_sql_injection",
+  "title": "Synthetic SQL injection in username lookup",
+  "language": "Python",
+  "vulnerability_name": "SQL injection",
+  "cwe": "CWE-89",
+  "expected_bandit_test_id": "B608",
+  "why_code_is_vulnerable": "The username is interpolated directly into the SQL statement, allowing crafted input to alter the query's meaning.",
+  "expected_vulnerable_test_outcome": "The functional test passes and the security test fails because the SQL-injection payload returns users instead of no users.",
+  "final_repair_success_criteria": [
+    "The security test passes.",
+    "The functional test passes.",
+    "Bandit no longer reports B608.",
+    "No new high-severity security finding is introduced."
+  ]
+}
