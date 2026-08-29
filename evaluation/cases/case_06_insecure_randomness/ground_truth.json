@@ -1,0 +1,16 @@
+{
+  "case_id": "case_06_insecure_randomness",
+  "title": "Synthetic insecure randomness evaluation",
+  "language": "Python",
+  "vulnerability_name": "insufficiently random security-sensitive value",
+  "cwe": "CWE-330",
+  "expected_bandit_test_id": "B311",
+  "why_code_is_vulnerable": "The function generates a security-sensitive reset code by repeatedly calling random.choice on a fixed uppercase-and-digit alphabet. Python's random module is predictable and unsuitable for security-sensitive values, so Bandit flags this as B311.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the reset code is the correct length and uses the allowed character set. The security test fails because the implementation uses random.choice, which returns 'R' under the monkeypatched test and produces 'RRRRRRRR' instead of the expected 'SSSSSSSS'.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B311.",
+    "No new high-severity security finding is introduced."
+  ]
+}
