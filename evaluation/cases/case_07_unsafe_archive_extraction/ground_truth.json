@@ -1,0 +1,16 @@
+{
+  "case_id": "case_07_unsafe_archive_extraction",
+  "title": "Synthetic unsafe archive extraction evaluation",
+  "language": "Python",
+  "vulnerability_name": "unsafe archive extraction",
+  "cwe": "CWE-22",
+  "expected_bandit_test_id": "B202",
+  "why_code_is_vulnerable": "The function calls archive.extractall(path=destination) without a safe filter and without validating archive members. This can permit path traversal or arbitrary file writes when untrusted tar archives are extracted, and Bandit flags this as B202.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the fake archive receives the requested extraction path and the function returns None. The security test fails because the vulnerable implementation does not supply the required filter='data' keyword argument.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B202.",
+    "No new high-severity security finding is introduced."
+  ]
+}
