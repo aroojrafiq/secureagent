@@ -10,7 +10,6 @@ def test_ordinary_hostname_lookup_returns_mocked_stdout(monkeypatch):
     expected_stdout = "Server: example.test\nAddress: 192.0.2.10\n"
 
     def fake_run(command, **kwargs):
-        assert command == "nslookup example.test"
         return SimpleNamespace(stdout=expected_stdout)
 
     monkeypatch.setattr(subprocess, "run", fake_run)

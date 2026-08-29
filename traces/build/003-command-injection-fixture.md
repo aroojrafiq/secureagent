@@ -141,6 +141,17 @@ The Bandit scan reported B602 in the intentionally vulnerable command execution 
 - The fixture and validation evidence were accepted as representative of the intentionally vulnerable command-injection case.
 - No commit or push has occurred yet.
 
+## Post-Baseline Harness Correction
+
+- The first controlled baseline exposed that the functional test incorrectly required the vulnerable string command representation.
+- A correct secure argv-list repair therefore could not pass both tests.
+- The human invalidated that first baseline run.
+- The over-constraining assertion was removed from the functional test.
+- The security test remained unchanged.
+- The original vulnerable fixture was revalidated afterward.
+- pytest: 1 failed, 1 passed in 0.32s
+- Bandit: B602 remained in vulnerable_app.py at line 15
+
 ## 8. Outcome
 
-The second intentionally vulnerable synthetic security fixture was created and validated in the expected vulnerable state without repairing the vulnerability or altering any existing files.
+The second intentionally vulnerable synthetic security fixture was created and initially validated in the expected vulnerable state. A later baseline run exposed an over-constrained functional assertion, which was removed without changing the vulnerable implementation or the security test. The corrected fixture was then revalidated successfully in its intended vulnerable state.
