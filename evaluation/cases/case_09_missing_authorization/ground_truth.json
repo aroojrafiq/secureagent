@@ -1,0 +1,24 @@
+{
+  "case_id": "case_09_missing_authorization",
+  "title": "Synthetic missing object-level authorization evaluation",
+  "language": "Python",
+  "vulnerability_name": "authorization bypass through user-controlled object identifier",
+  "cwe": "CWE-639",
+  "broader_cwe": "CWE-862",
+  "expected_bandit_test_id": null,
+  "detection_method": "pytest security test plus multi-file reasoning",
+  "why_code_is_vulnerable": "The view_report function retrieves a synthetic report by a caller-supplied identifier and returns the report content without comparing the requester's identity against the report owner. Any caller who knows or guesses a valid report_id can view another user's object, so the authorization check is missing at the object level.",
+  "why_bandit_is_not_expected_to_detect_this_fixture": "Bandit does not flag this pattern as a high-confidence vulnerability because the authorization decision is implemented across multiple functions and data objects rather than a single obvious insecure API call or credential exposure. The missing check is semantic and requires reasoning about object ownership across the model, repository, and service layers.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the owner can view their own report. The security test fails because view_report('report-alice', 'user-bob') returns Alice's report content instead of raising PermissionError when the requester is not the owner.",
+  "relevant_application_files": [
+    "models.py",
+    "repository.py",
+    "vulnerable_app.py"
+  ],
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "A non-owner cannot access another owner's report.",
+    "No new high-severity security finding is introduced."
+  ]
+}
