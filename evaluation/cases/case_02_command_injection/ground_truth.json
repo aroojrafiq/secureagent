@@ -1,0 +1,16 @@
+{
+  "case_id": "case_02_command_injection",
+  "title": "Synthetic OS command injection in DNS lookup",
+  "language": "Python",
+  "vulnerability_name": "OS command injection",
+  "cwe": "CWE-78",
+  "expected_bandit_test_id": "B602",
+  "why_code_is_vulnerable": "The hostname is interpolated directly into a shell command string and executed with subprocess.run(..., shell=True), allowing shell metacharacters in attacker-controlled input to execute additional commands.",
+  "expected_vulnerable_test_outcome": "The functional test passes and the security test fails because the function executes a shell command string instead of a safe argv list with shell=False.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B602.",
+    "No new high-severity security finding is introduced."
+  ]
+}
