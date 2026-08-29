@@ -1,0 +1,16 @@
+{
+  "case_id": "case_05_weak_hash",
+  "title": "Synthetic weak cryptographic hash evaluation",
+  "language": "Python",
+  "vulnerability_name": "weak cryptographic hash",
+  "cwe": "CWE-327",
+  "expected_bandit_test_id": "B324",
+  "why_code_is_vulnerable": "The function hashes arbitrary audit-record strings with hashlib.md5 after UTF-8 encoding. MD5 is cryptographically broken and unsuitable for security-sensitive hashing, and Bandit flags this as B324.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the same synthetic input produces the same MD5 digest across calls. The security test fails because the expected secure SHA-256 digest does not match the insecure MD5 output.",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B324.",
+    "No new high-severity security finding is introduced."
+  ]
+}
