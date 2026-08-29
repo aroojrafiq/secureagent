@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Preserve hackathon agent build trajectories
+!traces/build/
+!traces/build/**
