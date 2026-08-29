@@ -1,0 +1,18 @@
+{
+  "case_id": "case_03_hardcoded_secret",
+  "title": "Synthetic hardcoded authentication token",
+  "language": "Python",
+  "vulnerability_name": "Hardcoded password/token",
+  "cwe": "CWE-259",
+  "expected_bandit_test_id": "B105",
+  "why_code_is_vulnerable": "An authentication token is hardcoded as a module-level constant, allowing anyone with access to the source code to obtain valid credentials. The variable name 'PASSWORD' triggers Bandit's B105 check.",
+  "expected_vulnerable_test_outcome": "The functional test passes because the function uses the hardcoded token which matches the environment variable value. The security test fails because the function ignores the SECUREAGENT_SERVICE_TOKEN environment variable and always returns the hardcoded token.",
+  "required_environment_variable": "SECUREAGENT_SERVICE_TOKEN",
+  "final_repair_success_criteria": [
+    "The functional test passes.",
+    "The security test passes.",
+    "Bandit no longer reports B105.",
+    "No secret value is committed.",
+    "No new high-severity security finding is introduced."
+  ]
+}
