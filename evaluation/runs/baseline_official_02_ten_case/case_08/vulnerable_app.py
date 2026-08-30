@@ -13,5 +13,8 @@ EXPORT_DIRECTORY = Path("synthetic-exports")
 
 
 def build_export_path(filename: str) -> Path:
-    """Return the export path for a provided filename without validation."""
-    return EXPORT_DIRECTORY / filename
+    """Return the export path for a provided filename after validating traversal attempts."""
+    candidate_path = Path(filename)
+    if candidate_path.is_absolute() or ".." in candidate_path.parts:
+        raise ValueError("Path traversal attempts are not allowed")
+    return EXPORT_DIRECTORY / candidate_path

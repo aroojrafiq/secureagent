@@ -11,6 +11,6 @@ import hashlib
 
 # INTENTIONALLY VULNERABLE SYNTHETIC EVALUATION FIXTURE: THIS MUST NEVER BE USED IN PRODUCTION.
 def hash_audit_record(value: str) -> str:
-    """Return the MD5 hex digest for an audit record string."""
+    """Return the SHA-256 hex digest for an audit record string."""
     encoded_value = value.encode("utf-8")
-    return hashlib.md5(encoded_value).hexdigest()
+    return hashlib.sha256(encoded_value).hexdigest()

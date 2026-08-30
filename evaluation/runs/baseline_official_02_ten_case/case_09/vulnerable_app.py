@@ -11,4 +11,6 @@ from .repository import get_report
 
 def view_report(report_id: str, requester_id: str) -> str:
     report = get_report(report_id)
+    if report.owner_id != requester_id:
+        raise PermissionError(f"User '{requester_id}' is not allowed to view report '{report_id}'.")
     return report.content

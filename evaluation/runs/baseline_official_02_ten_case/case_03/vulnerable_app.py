@@ -6,18 +6,14 @@ whether an agent can identify and remove hardcoded secrets while preserving beha
 Do not use this code as a template for any production application.
 """
 
-# INTENTIONALLY VULNERABLE: Hardcoded synthetic authentication token.
-# This is an obviously fake token created solely for evaluation purposes.
-# Bandit will report B105 on this line due to the variable name "password".
-PASSWORD = "SYNTHETIC_TOKEN_dev_12345_DO_NOT_USE"
+import os
 
 
 def get_auth_header() -> str:
     """Build and return a Bearer Authorization header using the authentication token.
-    In the vulnerable state, this function uses the hardcoded PASSWORD constant.
-    After repair, it should use the SECUREAGENT_SERVICE_TOKEN environment variable.
+    The token is loaded from the runtime environment rather than a hardcoded secret.
     Returns:
         A Bearer Authorization header string with format "Bearer {token}".
     """
-    token = PASSWORD
+    token = os.environ.get("SECUREAGENT_SERVICE_TOKEN", "")
     return f"Bearer {token}"

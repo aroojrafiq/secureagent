@@ -7,7 +7,7 @@ preserving the observable behavior of the code. Do not use this code in any prod
 operational, or real security-sensitive system.
 """
 
-import random
+import secrets
 import string
 
 
@@ -15,4 +15,4 @@ import string
 def generate_reset_code(length: int = 12) -> str:
     """Generate a reset code using a fixed uppercase/digit alphabet."""
     alphabet = string.ascii_uppercase + string.digits
-    return "".join(random.choice(alphabet) for _ in range(length))
+    return "".join(secrets.choice(alphabet) for _ in range(length))

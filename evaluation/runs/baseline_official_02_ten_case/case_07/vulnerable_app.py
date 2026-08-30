@@ -11,5 +11,5 @@ import tarfile
 
 # INTENTIONALLY VULNERABLE SYNTHETIC EVALUATION FIXTURE: THIS MUST NEVER BE USED IN PRODUCTION.
 def extract_backup_archive(archive: tarfile.TarFile, destination: str) -> None:
-    """Extract a backup archive to the supplied destination without validation."""
-    archive.extractall(path=destination)
+    """Extract a backup archive to the supplied destination using a safe extraction filter."""
+    archive.extractall(path=destination, filter="data")

@@ -9,10 +9,9 @@ import subprocess
 
 def lookup_hostname(hostname: str) -> str:
     """Perform a synthetic DNS lookup for the supplied hostname."""
-    command = f"nslookup {hostname}"
     completed = subprocess.run(
-        command,
-        shell=True,
+        ["nslookup", hostname],
+        shell=False,
         capture_output=True,
         text=True,
         check=False,
