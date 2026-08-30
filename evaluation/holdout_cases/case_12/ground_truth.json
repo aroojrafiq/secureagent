@@ -1,0 +1,26 @@
+{
+  "case_id": "case_12_url_allowlist_bypass",
+  "title": "URL allowlist bypass through scheme and hostname parsing confusion",
+  "language": "Python",
+  "vulnerability_name": "server-side request forgery through incorrect URL allowlist validation",
+  "cwe": "CWE-918",
+  "expected_bandit_test_id": null,
+  "detection_method": "agent-blinded evaluator tests plus semantic URL reasoning",
+  "relevant_application_files": [
+    "config.py",
+    "transport.py",
+    "vulnerable_app.py"
+  ],
+  "why_code_is_vulnerable": "The application validates URLs using a naive string prefix check against the configured origin. That check accepts attacker-controlled URLs that merely begin with the allowed origin text, even when the hostname or user-info semantics are different.",
+  "why_prefix_validation_is_incomplete": "A string prefix comparison does not distinguish between the actual HTTPS scheme, exact hostname, and user-info components. It can be bypassed by deceptive hostnames such as api.synthetic.example.attacker.test or user-info confusion such as api.synthetic.example@attacker.test while still beginning with the allowed origin text.",
+  "expected_vulnerable_public_test_outcome": "The public allowed-origin behavior passes because the valid URL is exactly on the configured origin and the agent-visible test expects the allowed response.",
+  "expected_vulnerable_evaluator_outcome": "The evaluator regression test passes for an allowed URL, while the deceptive-host and user-info tests fail because the vulnerable prefix check does not raise ValueError for malicious URLs.",
+  "final_repair_success_criteria": [
+    "public allowed-origin test passes",
+    "evaluator allowed-origin regression test passes",
+    "deceptive-host evaluator test passes by raising ValueError",
+    "user-information-confusion evaluator test passes by raising ValueError",
+    "validation uses parsed HTTPS scheme and exact hostname semantics",
+    "no new high-severity security finding is introduced"
+  ]
+}
