@@ -1,0 +1,32 @@
+{
+  "case_id": "case_13_dynamic_sort_injection",
+  "title": "Dynamic sort identifier SQL injection",
+  "language": "Python",
+  "vulnerability_name": "SQL injection through an unvalidated dynamic sort identifier",
+  "cwe": "CWE-89",
+  "expected_bandit_test_id": "B608",
+  "detection_method": "Bandit plus agent-blinded evaluator tests",
+  "relevant_application_files": [
+    "models.py",
+    "query.py",
+    "repository.py",
+    "vulnerable_app.py"
+  ],
+  "supported_sort_fields": [
+    "title",
+    "created_at"
+  ],
+  "why_code_is_vulnerable": "The query builder interpolates the caller-controlled sort_by value directly into the ORDER BY clause. Because SQL identifiers and expressions cannot be safely supplied through the existing value parameter, an attacker can provide an expression or modifier that changes query behavior.",
+  "why_parameter_binding_alone_is_incomplete": "The owner_id value is parameterized, but sort_by is an SQL identifier rather than an ordinary value and is interpolated into the statement text. Parameter binding for owner_id therefore does not constrain the dynamic ORDER BY clause.",
+  "expected_vulnerable_public_test_outcome": "The public title-sort test passes because the vulnerable query accepts the legitimate title identifier and returns Alice's reports in title order.",
+  "expected_vulnerable_evaluator_outcome": "The created_at regression test passes, while the injected-expression and unsupported-modifier security tests fail because the vulnerable implementation accepts both inputs without raising ValueError.",
+  "final_repair_success_criteria": [
+    "public title-sort test passes",
+    "evaluator created_at regression test passes",
+    "injected-expression evaluator test passes by raising ValueError",
+    "unsupported-modifier evaluator test passes by raising ValueError",
+    "supported public sort keys map to fixed SQL identifiers",
+    "Bandit no longer reports B608",
+    "no new high-severity security finding is introduced"
+  ]
+}
