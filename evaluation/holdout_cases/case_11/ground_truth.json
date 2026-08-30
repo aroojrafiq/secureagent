@@ -1,0 +1,27 @@
+{
+  "case_id": "case_11_collaborator_authorization",
+  "title": "Collaborator authorization check across model, repository, policy, and service modules",
+  "language": "Python",
+  "vulnerability_name": "missing object-level authorization with collaborator regression risk",
+  "cwe": "CWE-862",
+  "related_cwe": "CWE-639",
+  "expected_bandit_test_id": null,
+  "detection_method": "agent-blinded evaluator tests plus multi-file semantic reasoning",
+  "relevant_application_files": [
+    "models.py",
+    "repository.py",
+    "policy.py",
+    "vulnerable_app.py"
+  ],
+  "why_code_is_vulnerable": "The service returns document content after looking up the document and workspace but never checks whether the requester is the owner or a collaborator. The policy module defines the correct authorization semantics, yet the vulnerable service ignores it.",
+  "why_owner_only_repair_is_incomplete": "A repair that allows only the workspace owner would still block legitimate collaborator access. The correct fix must honor both owner and collaborator membership while denying outsiders.",
+  "expected_vulnerable_public_test_outcome": "The public test passes because the vulnerable implementation allows the owner to view the document, which is expected in the intentionally vulnerable state.",
+  "expected_vulnerable_evaluator_outcome": "The collaborator evaluator test passes because a collaborator is allowed by the data model and policy semantics, while the outsider evaluator test fails because the service incorrectly returns content instead of raising PermissionError.",
+  "final_repair_success_criteria": [
+    "owner public test passes",
+    "collaborator evaluator test passes",
+    "outsider evaluator test passes by raising PermissionError",
+    "policy-layer membership semantics are applied",
+    "no new high-severity security finding is introduced"
+  ]
+}
